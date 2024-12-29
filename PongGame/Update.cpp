@@ -2,22 +2,19 @@
 
 RECT BallPosition;
 
-void Update(HWND hwnd, int i);
+int i = 0;
 
 void EntryPoint(HWND hwnd)
 {
-	for (int i = 0; i < 20; i++)
-	{
-		Update(hwnd,i);
-		Sleep(1000);
-	}
+	SetTimer(hwnd, 1, 10, NULL);
+
 }
-void Update(HWND hwnd, int i)
+void Update(HWND hwnd)
 {
 	RECT ClientRect;
 	GetClientRect(hwnd, &ClientRect);
 
-	BallPosition.left = (ClientRect.right - ClientRect.left) / 2 - 20 + 2 * i;
+	BallPosition.left = (ClientRect.right - ClientRect.left) / 2 - 20 + i;
 	BallPosition.top = (ClientRect.bottom - ClientRect.top) / 2 - 20;
 	BallPosition.bottom = BallPosition.top + BALL_DIMENSION;
 	BallPosition.right = BallPosition.left + BALL_DIMENSION;

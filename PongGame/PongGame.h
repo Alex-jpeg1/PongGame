@@ -9,5 +9,7 @@
 void EntryPoint(HWND hwnd);
 
 extern RECT BallPosition;
+extern int i;
+void Update(HWND hwnd);
 
 #endif

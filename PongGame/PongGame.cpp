@@ -145,6 +145,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+    case WM_TIMER:
+        {
+        Update(hWnd);
+        i++;
+        if (i == 200)
+        {
+            KillTimer(hWnd, 1);
+        }
+        }
+        break;
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
