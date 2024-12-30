@@ -109,16 +109,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSE: Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -147,13 +137,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_TIMER:
         {
-        Update(hWnd);
+        UpdateBall(hWnd);
         i++;
-        if (i == 200)
-        {
-            KillTimer(hWnd, 1);
         }
-        }
+
         break;
     case WM_PAINT:
         {
@@ -161,11 +148,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hdc = BeginPaint(hWnd, &ps);
             HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
             FillRect(hdc, &BallPosition, hBrush);
+            FillRect(hdc, &LeftPaddle, hBrush);
+            FillRect(hdc, &RightPaddle, hBrush);
             DeleteObject(hBrush);
             EndPaint(hWnd, &ps);
         }
         break;
+    case WM_KEYDOWN:
+        {
+        switch (wParam)
+        {
+        case 'W':
+        {
+            UpdateLeftPaddle(hWnd, TRUE);
+        }
+        return 0;
+        case 'S':
+        {
+            UpdateLeftPaddle(hWnd, FALSE);
+        }
+        return 0;
+        case VK_UP:
+        {
+            UpdateRightPaddle(hWnd, TRUE);
+        }
+        return 0;
+        case VK_DOWN:
+        {
+            UpdateRightPaddle(hWnd, FALSE);
+        }
+        return 0;
+        }
+        }
+        break;
     case WM_DESTROY:
+        KillTimer(hWnd, 1);
         PostQuitMessage(0);
         break;
     default:
