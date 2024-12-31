@@ -5,12 +5,18 @@
 #define MAX_LOADSTRING 100
 
 // Global Variables:
-HINSTANCE hInst;                                
-WCHAR szTitle[MAX_LOADSTRING];                  
-WCHAR szWindowClass[MAX_LOADSTRING];
+HINSTANCE hInst;                                    
+WCHAR szTitle[MAX_LOADSTRING];                      
+WCHAR szWindowClass[MAX_LOADSTRING];                
 
-UpdatePaddle LeftPaddle(40, 40 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);
+UpdatePaddle LeftPaddle(40, 40 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);   
 UpdatePaddle RightPaddle(1000, 1000 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);
+/// Saving data about the paddles
+
+
+std::unordered_map<int, bool>KeyMap;
+///Saving the key states
+
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -26,9 +32,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Place code here.
-
-    // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_PONGGAME, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
@@ -141,10 +144,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_TIMER:
         {
-        UpdateBall(hWnd);
-        i++;
+            UpdateBall(hWnd);
+            i++;
+            if (KeyMap[VK_UP]) {
+                RightPaddle.UpdatePaddleMethod(hWnd, TRUE);
+            }
+            if (KeyMap[VK_DOWN]) {
+                RightPaddle.UpdatePaddleMethod(hWnd, FALSE);
+            }
+            if (KeyMap['W']) {
+                LeftPaddle.UpdatePaddleMethod(hWnd, TRUE);
+            }
+            if (KeyMap['S']) {
+                LeftPaddle.UpdatePaddleMethod(hWnd, FALSE);
+            }
         }
-
         break;
     case WM_PAINT:
         {
@@ -160,31 +174,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_KEYDOWN:
         {
-        switch (wParam)
-        {
-        case 'W':
-        {
-            LeftPaddle.UpdatePaddleMethod(hWnd, TRUE);
+		KeyMap[wParam] = true;
+		
         }
         break;
-        case 'S':
-        {
-            LeftPaddle.UpdatePaddleMethod(hWnd, FALSE);
-        }
-        break;
-        case VK_UP:
-        {
-            RightPaddle.UpdatePaddleMethod(hWnd, TRUE);
-        }
-        break;
-        case VK_DOWN:
-        {
-            RightPaddle.UpdatePaddleMethod(hWnd, FALSE);
-        }
-        break;
-        }
-        }
-        break;
+    case WM_KEYUP:
+    {
+		KeyMap[wParam] = false;
+    }
+    break;
     case WM_DESTROY:
         KillTimer(hWnd, 1);
         PostQuitMessage(0);
