@@ -10,15 +10,19 @@
 #define PADDLE_HEIGHT 40
 #define FRAME_RATE 16.67
 #define PADDLE_SPEED 50
+#define	BALL_SPEED 50/FRAME_RATE
+#define BALL_SPEED_X BALL_SPEED
+#define BALL_SPEED_Y BALL_SPEED
 
 void EntryPoint(HWND hwnd);
 
-extern RECT BallPosition;
-
-extern int i;
-
-void UpdateBall(HWND hwnd);
-
+extern RECT ClientRect;
+class UpdateBall {
+	public:
+		RECT BallPosition;
+		UpdateBall();
+		void UpdateBallMethod(HWND hwnd);
+};
 class UpdatePaddle {
 	public: 
 		RECT paddle;
@@ -26,4 +30,6 @@ class UpdatePaddle {
 		void UpdatePaddleMethod(HWND hwnd, BOOL Up);
 };
 
+extern UpdatePaddle LeftPaddle;
+extern UpdatePaddle RightPaddle;
 #endif

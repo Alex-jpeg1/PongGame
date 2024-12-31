@@ -12,7 +12,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];
 UpdatePaddle LeftPaddle(40, 40 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);   
 UpdatePaddle RightPaddle(1000, 1000 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);
 /// Saving data about the paddles
-
+UpdateBall Ball;
 
 std::unordered_map<int, bool>KeyMap;
 ///Saving the key states
@@ -121,8 +121,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
         {
+		    GetClientRect(hWnd, &ClientRect);
+			Ball = UpdateBall();
             EntryPoint(hWnd);
-
         }
         break;
     case WM_COMMAND:
@@ -144,8 +145,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_TIMER:
         {
-            UpdateBall(hWnd);
-            i++;
+		    Ball.UpdateBallMethod(hWnd);
+            
             if (KeyMap[VK_UP]) {
                 RightPaddle.UpdatePaddleMethod(hWnd, TRUE);
             }
@@ -165,7 +166,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
-            FillRect(hdc, &BallPosition, hBrush);
+            FillRect(hdc, &Ball.BallPosition, hBrush);
             FillRect(hdc, &LeftPaddle.paddle, hBrush);
             FillRect(hdc, &RightPaddle.paddle, hBrush);
             DeleteObject(hBrush);
