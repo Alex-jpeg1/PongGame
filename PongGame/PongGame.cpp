@@ -9,6 +9,9 @@ HINSTANCE hInst;
 WCHAR szTitle[MAX_LOADSTRING];                  
 WCHAR szWindowClass[MAX_LOADSTRING];
 
+UpdatePaddle LeftPaddle(40, 40 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);
+UpdatePaddle RightPaddle(1000, 1000 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);
+
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -116,6 +119,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         {
             EntryPoint(hWnd);
+
         }
         break;
     case WM_COMMAND:
@@ -148,8 +152,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             HDC hdc = BeginPaint(hWnd, &ps);
             HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
             FillRect(hdc, &BallPosition, hBrush);
-            FillRect(hdc, &LeftPaddle, hBrush);
-            FillRect(hdc, &RightPaddle, hBrush);
+            FillRect(hdc, &LeftPaddle.paddle, hBrush);
+            FillRect(hdc, &RightPaddle.paddle, hBrush);
             DeleteObject(hBrush);
             EndPaint(hWnd, &ps);
         }
@@ -160,24 +164,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
         case 'W':
         {
-            UpdateLeftPaddle(hWnd, TRUE);
+            LeftPaddle.UpdatePaddleMethod(hWnd, TRUE);
         }
-        return 0;
+        break;
         case 'S':
         {
-            UpdateLeftPaddle(hWnd, FALSE);
+            LeftPaddle.UpdatePaddleMethod(hWnd, FALSE);
         }
-        return 0;
+        break;
         case VK_UP:
         {
-            UpdateRightPaddle(hWnd, TRUE);
+            RightPaddle.UpdatePaddleMethod(hWnd, TRUE);
         }
-        return 0;
+        break;
         case VK_DOWN:
         {
-            UpdateRightPaddle(hWnd, FALSE);
+            RightPaddle.UpdatePaddleMethod(hWnd, FALSE);
         }
-        return 0;
+        break;
         }
         }
         break;

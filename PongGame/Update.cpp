@@ -3,9 +3,6 @@
 RECT BallPosition;
 
 int i = 0;
-RECT LeftPaddle = { 40, 200, 40 + PADDLE_WIDTH, 200 + PADDLE_HEIGHT };
-
-RECT RightPaddle = { 1000, 200, 1000 + PADDLE_WIDTH, 200 + PADDLE_HEIGHT };
 
 void EntryPoint(HWND hwnd)
 {
@@ -23,41 +20,25 @@ void UpdateBall(HWND hwnd)
 	InvalidateRect(hwnd, &ClientRect, TRUE);
 }
 
-void UpdateLeftPaddle(HWND hwnd, BOOL Up)
-{
-	RECT ClientRect;
 
-	GetClientRect(hwnd, &ClientRect);
-	
-	if (Up == FALSE)
-	{
-		LeftPaddle.top += PADDLE_SPEED / FRAME_RATE;
+
+	 UpdatePaddle::UpdatePaddle(int left, int right, int top, int bottom) {
+		paddle.left = left;
+		paddle.right = right;
+		paddle.top = top;
+		paddle.bottom = bottom;
 	}
-	else
+	 void UpdatePaddle::UpdatePaddleMethod(HWND hwnd, BOOL Up)
 	{
-		LeftPaddle.top -= PADDLE_SPEED / FRAME_RATE;
+		RECT ClientRect;
+		GetClientRect(hwnd, &ClientRect);
+		if (Up) {
+				paddle.top -= PADDLE_SPEED/FRAME_RATE;
+				paddle.bottom -= PADDLE_SPEED / FRAME_RATE;
+		}
+		else {
+				paddle.top += PADDLE_SPEED / FRAME_RATE;
+				paddle.bottom += PADDLE_SPEED / FRAME_RATE;
+		}
+		InvalidateRect(hwnd, &ClientRect, TRUE);
 	}
-
-	LeftPaddle.bottom = LeftPaddle.top + PADDLE_HEIGHT;
-
-	InvalidateRect(hwnd, &LeftPaddle, TRUE);
-}
-void UpdateRightPaddle(HWND hwnd, BOOL Up)
-{
-	RECT ClientRect;
-
-	GetClientRect(hwnd, &ClientRect);
-
-	if (Up == FALSE)
-	{
-		RightPaddle.top += PADDLE_SPEED / FRAME_RATE;
-	}
-	else
-	{
-		RightPaddle.top -= PADDLE_SPEED / FRAME_RATE;
-	}
-
-	RightPaddle.bottom = RightPaddle.top + PADDLE_HEIGHT;
-
-	InvalidateRect(hwnd, &RightPaddle, TRUE);
-}

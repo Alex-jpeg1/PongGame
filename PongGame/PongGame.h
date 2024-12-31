@@ -13,15 +13,16 @@
 void EntryPoint(HWND hwnd);
 
 extern RECT BallPosition;
-extern RECT LeftPaddle, RightPaddle;
 
 extern int i;
 
 void UpdateBall(HWND hwnd);
 
-void UpdateLeftPaddle(HWND hwnd, BOOL Up);
-
-void UpdateRightPaddle(HWND hwnd, BOOL Up);
-
+class UpdatePaddle {
+	public: 
+		RECT paddle;
+		UpdatePaddle(int left, int right, int top, int bottom);
+		void UpdatePaddleMethod(HWND hwnd, BOOL Up);
+};
 
 #endif
