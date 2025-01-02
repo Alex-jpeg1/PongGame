@@ -9,8 +9,8 @@ HINSTANCE hInst;
 WCHAR szTitle[MAX_LOADSTRING];                      
 WCHAR szWindowClass[MAX_LOADSTRING];                
 
-UpdatePaddle LeftPaddle(40, 40 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);   
-UpdatePaddle RightPaddle(1000, 1000 + PADDLE_WIDTH, 200, 200 + PADDLE_HEIGHT);
+UpdatePaddle LeftPaddle;   
+UpdatePaddle RightPaddle;
 /// Saving data about the paddles
 UpdateBall Ball;
 
@@ -120,9 +120,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     switch (message)
     {
     case WM_CREATE:
-        {
-		    GetClientRect(hWnd, &ClientRect);
-			Ball = UpdateBall();
+        {  
             EntryPoint(hWnd);
         }
         break;

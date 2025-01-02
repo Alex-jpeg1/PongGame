@@ -26,10 +26,11 @@ class UpdateBall {
 class UpdatePaddle {
 	public: 
 		RECT paddle;
+		UpdatePaddle();
 		UpdatePaddle(int left, int right, int top, int bottom);
 		void UpdatePaddleMethod(HWND hwnd, BOOL Up);
 };
-
+extern UpdateBall Ball;
 extern UpdatePaddle LeftPaddle;
 extern UpdatePaddle RightPaddle;
 #endif
